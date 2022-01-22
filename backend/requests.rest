@@ -1,0 +1,6 @@
+# GET http://localhost:3000/attacks?page=2&limit=5
+
+GET http://localhost:3000/aggregate?from=Fri%20Aug%2020%202021%2000:00:00%20GMT+0530%20(India%20Standard%20Time)&to=Wed%20Aug%2025%202021%2000:00:00%20GMT+0530%20(India%20Standard%20Time)
+
+
+
