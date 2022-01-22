@@ -1,5 +1,6 @@
 import React, { memo, useEffect, useState } from 'react';
 import useAppContext from '../hooks/useAppContext';
+import { Results } from '../reducer';
 
 import Loading from './Loading';
 
@@ -14,8 +15,9 @@ const Table = memo(() => {
     setResponseResults(results);
   }, [results]);
 
-  const sortByTimestamp = (event) => {
-    if (event.target.innerText !== 'timestamp') return;
+  const sortByTimestamp = (event: React.MouseEvent<HTMLLabelElement>) => {
+    const { innerText } = event.target as HTMLLabelElement;
+    if (innerText !== 'timestamp') return;
 
     const sortedResults = [...results].sort((a, b) => {
       return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
@@ -28,12 +30,11 @@ const Table = memo(() => {
 
   return (
     <table>
+      {/* @ts-expect-error */}
       <thead onClick={sortByTimestamp}>
         <tr>
           {columns.map((column, index) => (
-            <th value={column} key={`${column}_${index}`}>
-              {column}
-            </th>
+            <th key={`${column}_${index}`}>{column}</th>
           ))}
         </tr>
       </thead>
@@ -42,7 +43,7 @@ const Table = memo(() => {
           responseResults.map((result) => {
             return (
               <tr key={result._id}>
-                {columns.map((column) => {
+                {columns.map((column: keyof Results) => {
                   return (
                     <td key={`${result.id}_${column}`}>{result[column]}</td>
                   );

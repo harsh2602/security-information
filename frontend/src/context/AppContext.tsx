@@ -6,27 +6,41 @@ import React, {
   useReducer,
   useState,
 } from 'react';
-import { initialState, reducer } from '../reducer';
+import { AttacksInfo, initialState, reducer } from '../reducer';
 const RECORDS_PER_PAGE = 50;
 
 const AppContext = createContext(initialState);
 
 const AppContextProvider = memo(({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [attacksInfo, setAttacksInfo] = useState([]);
+  const [attacksInfo, setAttacksInfo] = useState<AttacksInfo>({
+    next: {
+      page: 0,
+      limit: 50,
+    },
+    previous: {
+      page: 0,
+      limit: 50,
+    },
+    results: [],
+    total: 0,
+  });
 
   const API_ENDPOINT = `http://localhost:3000/attacks?page=${state.currentPage}&limit=${RECORDS_PER_PAGE}`;
 
   useEffect(() => {
     fetch(API_ENDPOINT)
       .then((res) => res.json())
-      .then((response) => {
+      .then((response: AttacksInfo) => {
         setAttacksInfo(response);
 
         const remainder = response.total % RECORDS_PER_PAGE;
-        const totalPages =
-          Math.floor(response.total / RECORDS_PER_PAGE) +
-          (remainder > 0 && remainder < RECORDS_PER_PAGE && 1);
+        let rest = 0;
+
+        if (remainder > 0 && remainder < RECORDS_PER_PAGE) {
+          rest = 1;
+        }
+        const totalPages = Math.floor(response.total / RECORDS_PER_PAGE) + rest;
 
         dispatch({
           type: 'SET_TOTAL_PAGES',
