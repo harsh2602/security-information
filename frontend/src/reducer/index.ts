@@ -1,4 +1,4 @@
-interface Results {
+export interface Results {
   'attacker.id': string;
   'attacker.ip': string;
   'attacker.name': string;
@@ -30,17 +30,20 @@ export interface AttacksInfo {
   total: number;
 }
 
+type Columns = keyof Results;
+
 interface State {
-  columns: string[];
+  columns: Columns[];
   currentPage: number;
   totalPages: number;
-  attacksInfo: AttacksInfo[];
+  attacksInfo: AttacksInfo;
 }
+
 
 interface OptionClickedAction {
   type: 'OPTION_CLICKED';
   payload: {
-    columns: string[];
+    columns: Columns[];
   };
 }
 
@@ -84,7 +87,18 @@ export const initialState: State = {
   ],
   currentPage: 1,
   totalPages: 1,
-  attacksInfo: [],
+  attacksInfo: {
+    next: {
+      page: 0,
+      limit: 50,
+    },
+    previous: {
+      page: 0,
+      limit: 50,
+    },
+    results: [],
+    total: 0,
+  },
 };
 
 export const reducer = (state: State = initialState, action: Action) => {
