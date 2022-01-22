@@ -1,4 +1,79 @@
-export const initialState = {
+interface Results {
+  'attacker.id': string;
+  'attacker.ip': string;
+  'attacker.name': string;
+  'attacker.port': number;
+  'decoy.group': string;
+  'decoy.id': number;
+  'decoy.ip': string;
+  'decoy.name': string;
+  'decoy.port': number;
+  'decoy.type': string;
+  id: string;
+  kill_chain_phase: string;
+  severity: string;
+  timestamp: string;
+  type: string;
+  _id: string;
+}
+
+export interface AttacksInfo {
+  next: {
+    page: number;
+    limit: 50;
+  };
+  previous: {
+    page: number;
+    limit: 50;
+  };
+  results: Results[];
+  total: number;
+}
+
+interface State {
+  columns: string[];
+  currentPage: number;
+  totalPages: number;
+  attacksInfo: AttacksInfo[];
+}
+
+interface OptionClickedAction {
+  type: 'OPTION_CLICKED';
+  payload: {
+    columns: string[];
+  };
+}
+
+interface NextClickedAction {
+  type: 'NEXT_CLICKED';
+}
+
+interface PrevClickedAction {
+  type: 'PREV_CLICKED';
+}
+
+interface PageNumberInputAction {
+  type: 'PAGE_NUMBER_INPUT';
+  payload: {
+    currentPage: number;
+  };
+}
+
+interface SetTotalPagesAction {
+  type: 'SET_TOTAL_PAGES';
+  payload: {
+    totalPages: number;
+  };
+}
+
+type Action =
+  | OptionClickedAction
+  | NextClickedAction
+  | PrevClickedAction
+  | PageNumberInputAction
+  | SetTotalPagesAction;
+
+export const initialState: State = {
   columns: [
     'timestamp',
     'attacker.id',
@@ -12,7 +87,7 @@ export const initialState = {
   attacksInfo: [],
 };
 
-export const reducer = (state = initialState, action) => {
+export const reducer = (state: State = initialState, action: Action) => {
   if (action.type === 'OPTION_CLICKED') {
     return { ...state, columns: action.payload.columns };
   }
@@ -36,7 +111,6 @@ export const reducer = (state = initialState, action) => {
   }
 
   if (action.type === 'PAGE_NUMBER_INPUT') {
-    
     return { ...state, currentPage: action.payload.currentPage };
   }
 
