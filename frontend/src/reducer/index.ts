@@ -30,20 +30,49 @@ export interface AttacksInfo {
   total: number;
 }
 
-type Columns = keyof Results;
-
-interface State {
-  columns: Columns[];
+export interface State {
+  columns: [
+    'id',
+    'type',
+    'severity',
+    'kill_chain_phase',
+    'timestamp',
+    'attacker.id',
+    'attacker.ip',
+    'attacker.name',
+    'attacker.port',
+    'decoy.id',
+    'decoy.name',
+    'decoy.group',
+    'decoy.ip',
+    'decoy.port',
+    'decoy.type'
+  ];
   currentPage: number;
   totalPages: number;
   attacksInfo: AttacksInfo;
 }
 
-
 interface OptionClickedAction {
   type: 'OPTION_CLICKED';
   payload: {
-    columns: Columns[];
+    columns: [
+      'id',
+      'type',
+      'severity',
+      'kill_chain_phase',
+      'timestamp',
+      'attacker.id',
+      'attacker.ip',
+      'attacker.name',
+      'attacker.port',
+      'decoy.id',
+      'decoy.name',
+      'decoy.group',
+      'decoy.ip',
+      'decoy.port',
+      'decoy.type'
+    ];
   };
 }
 
@@ -69,7 +98,7 @@ interface SetTotalPagesAction {
   };
 }
 
-type Action =
+export type Action =
   | OptionClickedAction
   | NextClickedAction
   | PrevClickedAction

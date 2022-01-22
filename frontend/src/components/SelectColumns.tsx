@@ -27,17 +27,19 @@ const allColumns = [
 const SelectColumns = () => {
   const { columns, dispatch } = useAppContext();
 
-  const renderTable = (e) => {
+  const renderTable = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedOptions = Array.from(e.target.options)
-      .filter((o) => o.selected)
-      .map((o) => o.value);
+      .filter((option) => option.selected)
+      .map((option) => option.value);
 
-    dispatch({
-      type: 'OPTION_CLICKED',
-      payload: {
-        columns: selectedOptions,
-      },
-    });
+    dispatch &&
+      dispatch({
+        type: 'OPTION_CLICKED',
+        payload: {
+          // @ts-ignore
+          columns: selectedOptions,
+        },
+      });
   };
 
   return (

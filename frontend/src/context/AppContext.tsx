@@ -6,10 +6,15 @@ import React, {
   useReducer,
   useState,
 } from 'react';
-import { AttacksInfo, initialState, reducer } from '../reducer';
+import { Action, AttacksInfo, initialState, reducer, State } from '../reducer';
+
+interface Context extends State {
+  dispatch?: React.Dispatch<Action>;
+}
+
 const RECORDS_PER_PAGE = 50;
 
-const AppContext = createContext(initialState);
+const AppContext = createContext<Context>(initialState);
 
 const AppContextProvider = memo(({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);

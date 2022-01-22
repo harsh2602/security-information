@@ -6,24 +6,26 @@ const Pagination = () => {
   const [page, setPage] = useState(currentPage);
   const [invalidInput, setInvalidInput] = useState(false);
 
-  const inputEl = useRef(null);
+  const inputEl = useRef<HTMLInputElement | null>(null);
 
   const prev = () => {
     setPage(page - 1);
-    dispatch({
-      type: 'PREV_CLICKED',
-    });
+    dispatch &&
+      dispatch({
+        type: 'PREV_CLICKED',
+      });
   };
 
   const next = () => {
     setPage(page + 1);
-    dispatch({
-      type: 'NEXT_CLICKED',
-    });
+    dispatch &&
+      dispatch({
+        type: 'NEXT_CLICKED',
+      });
   };
 
   const goToPage = () => {
-    const { value } = inputEl.current;
+    const { value } = inputEl.current as HTMLInputElement;
 
     if (+value <= 0 || +value > totalPages || isNaN(+value)) {
       setInvalidInput(true);
@@ -33,12 +35,13 @@ const Pagination = () => {
     setInvalidInput(false);
     setPage(+value);
 
-    dispatch({
-      type: 'PAGE_NUMBER_INPUT',
-      payload: {
-        currentPage: +value,
-      },
-    });
+    dispatch &&
+      dispatch({
+        type: 'PAGE_NUMBER_INPUT',
+        payload: {
+          currentPage: +value,
+        },
+      });
   };
 
   if (columns && columns.length === 0) return null;
@@ -58,7 +61,7 @@ const Pagination = () => {
           ref={inputEl}
           type='text'
           value={page}
-          onChange={(e) => setPage(e.target.value)}
+          onChange={(e) => setPage(+e.target.value)}
         />
         <button onClick={goToPage}>Submit</button>
       </div>
